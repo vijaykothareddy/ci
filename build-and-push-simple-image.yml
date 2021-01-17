@@ -9,20 +9,22 @@ resources:
     branch: master
 
 # Where we will push the image
-- name: build-image
+- name: ecr-docker-reg
   type: docker-image
   source:
-    repository: busybox
+    aws_access_key_id: ((aws-token))
+    aws_secret_access_key: ((aws-secret))
+    repository: ((aws-repo))
 
 
 jobs:
 - name: build-and-push
   plan:
   - get: vijay-ci
-  - get: build-image
+  - get: ecr-docker-reg
   
   - task: build
-    image: build-image
+    image: ecr-docker-reg
     file: vijay-ci/tasks/build.yml
     params: 
       aws_access_key_id: ((aws-token))
