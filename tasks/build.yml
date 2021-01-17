@@ -1,0 +1,11 @@
+---
+platform: linux
+
+run:
+  Path: sh
+  args: 
+    - -ec
+    - |
+       docker build -t vijay-build -f Dockerfiles/Dockerfile .
+       aws ecr get-login --no-include-email --region ap-southeast-2
+       docker push 698171955154.dkr.ecr.ap-southeast-2.amazonaws.com/vijay_tutorial

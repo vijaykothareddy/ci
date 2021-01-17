@@ -1,27 +1,32 @@
 ---
 resources:
 # The repo with our Dockerfile
-- name: concourse-examples
+- name: vijay-ci
   type: git
   icon: github
   source:
-    uri: https://github.com/concourse/examples.git
+    uri: https://github.com/vijaykothareddy/ci.git
     branch: master
 
 # Where we will push the image
-- name: ecr-docker-reg
+- name: build-image
   type: docker-image
   source:
-    aws_access_key_id: ((aws-token))
-    aws_secret_access_key: ((aws-secret))
-    repository: ((aws-repo))
+    repository: busybox
 
 
 jobs:
 - name: build-and-push
   plan:
-  - get: concourse-examples
+  - get: vijay-ci
+  - get: build-image
   
-  - put: ecr-docker-reg
-    params:
-      build: concourse-examples/Dockerfiles/simple
+  - task: build
+    image: build-image
+    file: vijay-ci/tasks/build.yml
+    params: 
+      aws_access_key_id: ((aws-token))
+      aws_secret_access_key: ((aws-secret))
+      aws_default_region: ap-southeast-2
+
+
