@@ -10,7 +10,7 @@ resources:
 
 # Where we will push the image
 - name: ecr-docker-reg
-  type: docker-image
+  type: registry-image
   source:
     aws_access_key_id: ((aws-token))
     aws_secret_access_key: ((aws-secret))
@@ -21,14 +21,24 @@ jobs:
 - name: build-and-push
   plan:
   - get: vijay-ci
-  - get: ecr-docker-reg
-  
-  - task: build
-    image: ecr-docker-reg
-    file: vijay-ci/tasks/build.yml
-    params: 
-      aws_access_key_id: ((aws-token))
-      aws_secret_access_key: ((aws-secret))
-      aws_default_region: ap-southeast-2
+  - task: build-task-image
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: vijay-ci
+      outputs:
+      - name: image
+      params:
+        CONTEXT: ci/Dockerfiles/simple
+      run:
+        path: build
+  - put: simple-image
+    params:
+      image: image/image.tar
 
 
