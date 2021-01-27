@@ -1,5 +1,5 @@
 FROM busybox
 
 RUN echo "I'm simple!"
-COPY ./stranger /stranger
+COPY vijay-ci/Dockerfiles/simple/stranger /stranger
 RUN cat /stranger
