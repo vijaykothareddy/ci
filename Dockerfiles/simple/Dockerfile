@@ -1,7 +1,9 @@
 FROM busybox
 
 RUN echo "I'm simple!"
-RUN ls -ltr
-run cd /vijay-ci
-COPY /vijay-ci/Dockerfiles/simple/stranger /stranger
+WORKDIR /app
+
+COPY build-and-push-simple-image.yml /app
+
+COPY ./Dockerfiles/simple/stranger /stranger
 RUN cat /stranger
