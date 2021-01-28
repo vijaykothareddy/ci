@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 RUN echo "I'm simple!"
-RUN apt update && apt -y install curl \
+RUN apt -y install curl \
     python3 \
     python3-pip
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
