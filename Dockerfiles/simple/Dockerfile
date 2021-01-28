@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 RUN echo "I'm simple!"
-RUN apt install curl
+RUN apt-get update && apt-get -qq -y install curl
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 RUN poetry export -f requirements.txt --without-hashes -o ./Dockerfiles/simple/requirements.txt
 RUN poetry export -f requirements.txt --without-hashes --dev | sed '/^ipython==7.18.1/d'|sed '/^traitlets==5.0.4/d'| \
